@@ -106,9 +106,9 @@ M A I N   C O N T E N T
                 <table id="tbl_arqueo_caja" class="table table-striped w-100 shadow border border-secondary">
                     <thead class="bg-main">
                         <tr style="font-size: 15px;">
-                            <th class="text-cetner"></th> <!-- 10 -->
-                            <th>ID</th> <!-- 2 -->
-                            <th>Id Usu</th> <!-- 3 -->
+                            <th class="text-cetner"></th> <!-- 0 -->
+                            <th>ID</th> <!-- 1 -->
+                            <th>Id Usu</th> <!-- 2 -->
                             <th>Usuario</th> <!-- 3 -->
                             <th>Fec. Apertura</th> <!-- 4 -->
                             <th>Fec. Cierre</th> <!-- 5 -->
@@ -154,7 +154,7 @@ M A I N   C O N T E N T
         $(".btnBuscarArqueos").on('click', function() {
             fnc_CargarDataTableArqueosCaja($("#usuario").val().split("-")[0].trim(), $("#fecha_desde").val(), $("#fecha_hasta").val());
         })
-        $(".btnLimpiarFiltro").on('click', function() {
+        $("#btnLimpiarFiltros").on('click', function() {
             $("#usuario").val(""); 
             $("#fecha_desde").val(""); 
             $("#fecha_hasta").val("")
