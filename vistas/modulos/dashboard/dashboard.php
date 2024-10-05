@@ -449,6 +449,7 @@
                 var mes_anterior = moment(mes_actual, "DD-MM-YYYY").add(-1, 'months').format('MM/YYYY');
 
                 var total_ventas_mes = 0;
+                // var total_ventas_mes_ant = 0;
 
                 for (let i = 0; i < respuesta.length; i++) {
 
@@ -456,6 +457,7 @@
                     total_venta.push(respuesta[i]['total_venta']);
                     total_venta_ant.push(respuesta[i]['total_venta_ant']);
                     total_ventas_mes = parseFloat(total_ventas_mes) + parseFloat(respuesta[i]['total_venta']);
+                    // total_ventas_mes_ant += parseFloat(total_ventas_mes_ant[i]);
 
                 }
 
