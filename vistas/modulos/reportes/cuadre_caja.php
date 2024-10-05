@@ -65,7 +65,7 @@ M A I N   C O N T E N T
 
                             <div class="col-12 col-lg-6 mb-2">
                                 <label class="mb-0 ml-1 text-sm my-text-color"><i class="fas fa-gifts mr-1 my-text-color"></i>Usuario</label>
-                                <input type="text" style="border-radius: 20px;" class="form-control form-control-sm" id="usuario" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                                <input type="text" style="border-radius: 20px;" class="form-control form-control-sm" id="usuario" aria-label="Small" aria-describedby="inputGroup-sizing-sm" disabled>
                             </div>
 
 
@@ -191,8 +191,24 @@ M A I N   C O N T E N T
 
         $("#tbl_arqueo_caja").DataTable({
             dom: 'Bfrtip',
-            buttons: ['pageLength'],
-            pageLength: [5, 10, 15, 30, 50, 100],
+            buttons: ['pageLength', {
+                    extend: 'excelHtml5',
+                    text: 'Excel',
+                    title: 'Arqueos de Caja',
+                    exportOptions: {
+                        columns: [1, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: 'PDF',
+                    title: 'Arqueos de Caja',
+                    exportOptions: {
+                        columns: [1, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+                    }
+                }
+            ],
+            pageLength: [10, 25, 50, 100, 200, 500, 1000],
             pageLength: 10,
             ajax: {
                 url: "ajax/arqueo_caja.ajax.php",
@@ -266,7 +282,7 @@ M A I N   C O N T E N T
     }
 
     /*===================================================================*/
-    //A U T O C O M P L E T E   D E   C L I E N T E S
+    //A U T O C O M P L E T E   D E   U S U A R I O S
     /*===================================================================*/
     function fnc_CargarAutocompleteUsuarios() {
 
@@ -278,7 +294,6 @@ M A I N   C O N T E N T
                 $("#usuario").val(ui.item.value)
                 return false;
             },
-
             response: function(event, ui) {
 
                 if (!ui.content.length) {
@@ -292,6 +307,7 @@ M A I N   C O N T E N T
                     };
                     ui.content.push(noResult);
                 }
+
             },
             open: function() {
                 $("ul.ui-menu").width($(this).innerWidth());

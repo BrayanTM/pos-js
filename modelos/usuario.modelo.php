@@ -363,4 +363,19 @@ class UsuarioModelo
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_NAMED);
     }
+
+    public static function mdlObtenerUsuariosAutocomplete($term)
+    {
+
+        $stmt = Conexion::conectar()->prepare("SELECT usuario as value, nombre_usuario as label 
+                                                FROM usuarios 
+                                                WHERE usuario LIKE :term OR nombre_usuario LIKE :term");
+
+        $stmt->bindValue(':term', '%' . $term . '%', PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+    }
 }
