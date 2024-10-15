@@ -11842,7 +11842,7 @@
             <thead>
                 <tr>
                     <th style="width: 60%;"></th>
-                    <th colspan="2" style="width: 20%; text-align: center;border: 1px solid #17202a;background-color: #17202a;color: #fff">Resumen</th>
+                    <th colspan="2" style="width: 20%; text-align: center;border: 1px solid #17202a;background-color: #17202a;color: #fff">RESUMEN</th>
                     <!-- <th style="width: 20%;border: 1px solid;"></th> -->
                 </tr>
             </thead>
