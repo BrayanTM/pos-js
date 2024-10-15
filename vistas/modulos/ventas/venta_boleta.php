@@ -463,6 +463,13 @@
         /* ======================================================================================
         I N I C I O   E V E N T O S   D A T A T A B L E   L I S T A D O   D E   P R O D U C T O S
         ====================================================================================== */
+
+        // $("#producto").change(function() {
+
+        //     CargarProductos();
+
+        // });
+
         // EVENTO PARA MODIFICAR EL PRECIO DE VENTA DEL PRODUCTO
         $('#tbl_ListadoProductos tbody').on('click', '.dropdown-item', function() {
 
@@ -662,6 +669,7 @@
             $('#tbl_ListadoProductos').DataTable().row($(this).parents('tr')).remove().draw();
             recalcularTotales();
         });
+
         /* ======================================================================================
         F I N   E V E N T O S   D A T A T A B L E   L I S T A D O   D E   P R O D U C T O S
         ====================================================================================== */
@@ -696,7 +704,7 @@
 
         fnc_OcultarLoader();
 
-    })
+    }) // FIN DOCUMENT READY
 
 
     function fnc_InicializarFormulario() {
@@ -1223,6 +1231,7 @@
                     /*===================================================================*/
                 } else {
                     mensajeToast('error', 'EL PRODUCTO NO EXISTE O NO TIENE STOCK');
+
                 }
 
             }
@@ -1506,7 +1515,7 @@
                     })
                 }
 
-                window.open($ruta+'vistas/modulos/impresiones/generar_ticket.php?id_venta=' +
+                window.open($ruta + 'vistas/modulos/impresiones/generar_ticket.php?id_venta=' +
                     response["id_venta"],
                     "ModalPopUp",
                     "toolbar=no," +
@@ -1644,7 +1653,7 @@
     }
 
     function fnc_ImprimirBoleta($id_venta) {
-        window.open($ruta+'vistas/modulos/impresiones/generar_ticket.php?id_venta=' + $id_venta,
+        window.open($ruta + 'vistas/modulos/impresiones/generar_ticket.php?id_venta=' + $id_venta,
             "ModalPopUp",
             "toolbar=no," +
             "scrollbars=no," +
