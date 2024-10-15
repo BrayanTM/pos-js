@@ -11744,12 +11744,22 @@
         <table class="table">
             <tbody>
                 <tr>
-                    <td rowspan="2" style="font-size: 30px;text-align: center; font-weight: bold;">REGISTRO DE COMPRA</td>
+                    <td rowspan="1" style="font-size: 15px;text-align: center; font-weight: bold;">DISTRIBUIDORA</td>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="font-size: 30px;text-align: center; font-weight: bold;">LA GUADALUPANA</td>
+                </tr>
+                <tr>
+                    <td rowspan="1" style="font-size: 20px;text-align: center; font-weight: bold;">REGISTRO DE COMPRA</td>
+                </tr>
+                <tr>
+                    <td></td>
                     <td style="border: 1px solid; text-align: center">
                         Fecha: <?php echo $compra->fecha_compra; ?><br>
                     </td>
                 </tr>
                 <tr>
+                    <td></td>
                     <td style="border: 1px solid; text-align: center"> Nro. Compra: <?php echo $compra->id; ?></td>
                 </tr>
 
@@ -11840,7 +11850,7 @@
                 <tr>
                     <td style="width: 60%;"></td>
                     <td scope="row" style="text-align: right;border: 1px solid;text-align: left;font-size: 14px"><span style="margin-left: 10px;">Subtotal</span></td>
-                    <td scope="row" style="text-align: right;border: 1px solid;text-align: center;font-size: 14px">Q <?php echo number_format((float)($compra->total_compra-$compra->total_iva), 2, '.', ''); ?></td>
+                    <td scope="row" style="text-align: right;border: 1px solid;text-align: center;font-size: 14px">Q <?php echo number_format((float)($compra->total_compra - $compra->total_iva), 2, '.', ''); ?></td>
                 </tr>
                 <tr>
                     <td style="width: 60%;"></td>
