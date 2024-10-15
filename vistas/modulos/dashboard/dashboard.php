@@ -390,7 +390,7 @@
 
         fnc_OcultarLoader();
 
-    })
+    }) // fin document ready
 
     function fnc_MostrarLoader() {
         $(".loading").removeClass('d-none');

@@ -54,7 +54,7 @@ class VentasModelo
     ========================================================================================= */
     static public function mdlRegistrarVenta($venta, $detalle_venta, $id_caja)
     {
-        
+
         $id_usuario = $_SESSION["usuario"]->id_usuario;
 
         $date = date('Y-m-d');
@@ -174,8 +174,8 @@ class VentasModelo
                 $dbh->beginTransaction();
                 $stmt->execute(array(
                     ':id_arqueo_caja' => $id_caja,
-                    ':id_tipo_movimiento' => $venta['forma_pago'] == "Credito" ? 10:$tipo_movimiento_caja["id_tipo_movimiento_caja"],
-                    ':descripcion' => 'INGRESO - ' . ($venta['forma_pago'] == "Credito" ? "VENTA AL CREDITO":$tipo_movimiento_caja['medio_pago']),
+                    ':id_tipo_movimiento' => $venta['forma_pago'] == "Credito" ? 10 : $tipo_movimiento_caja["id_tipo_movimiento_caja"],
+                    ':descripcion' => 'INGRESO - ' . ($venta['forma_pago'] == "Credito" ? "VENTA AL CREDITO" : $tipo_movimiento_caja['medio_pago']),
                     ':monto' =>  $producto['importe_total'],
                     ':comprobante' => $venta['serie'] . '-' . $venta['correlativo'],
                     ':estado' => 1
@@ -665,10 +665,10 @@ class VentasModelo
             $sub_array[] = $row['opciones']; //0
             $sub_array[] = $row['id']; //1
             $sub_array[] = $row['comprobante']; //2
-            $sub_array[] = $row['fecha_emision'];//3
-            $sub_array[] = $row['forma_pago'];//4
-            $sub_array[] = $row['iva'];//5
-            $sub_array[] = $row['importe_total'];//6
+            $sub_array[] = $row['fecha_emision']; //3
+            $sub_array[] = $row['forma_pago']; //4
+            $sub_array[] = $row['iva']; //5
+            $sub_array[] = $row['importe_total']; //6
             $data[] = $sub_array;
         }
 
@@ -777,6 +777,135 @@ class VentasModelo
         );
 
         return $clientes;
+    }
+
+    static public function mdlObtenerListadoBoletasPorDia($post)
+    {
+        $id_usuario = $_SESSION["usuario"]->id_usuario;
+
+        $columns = [
+            "id",
+            "comprobante",
+            "forma_pago",
+            "fecha_emision",
+            "total_iva",
+            "importe_total"
+
+        ];
+
+        $query = ' SELECT 
+                         "" as opciones,
+                         v.id,
+                        concat(v.serie,"-",v.correlativo) as comprobante, 
+                        v.fecha_emision,
+                        upper(forma_pago) as forma_pago,
+                        concat(mon.simbolo,format(v.total_iva,2)) as iva,
+                        concat(mon.simbolo,format(v.importe_total,2)) as importe_total
+                from venta v inner join serie s on v.id_serie = s.id
+                             inner join moneda mon on mon.id = v.id_moneda';
+
+        if (isset($post["search"]["value"])) {
+            $query .= '  WHERE s.id_tipo_comprobante = "03"
+                AND date(v.fecha_emision) = CURDATE()
+                AND v.id_usuario = "' . $id_usuario . '"
+                AND (v.serie like "%' . $post["search"]["value"] . '%"
+                     or v.correlativo like "%' . $post["search"]["value"] . '%"
+                     or concat(v.serie,"-",v.correlativo) like "%' . $post["search"]["value"] . '%"
+                     or v.fecha_emision like "%' . $post["search"]["value"] . '%")';
+        }
+
+        if (isset($post["order"])) {
+            $query .= ' ORDER BY ' . $columns[$post['order']['0']['column']] . ' ' . $post['order']['0']['dir'] . ' ';
+        } else {
+            $query .= ' ORDER BY v.id desc ';
+        }
+
+        //SE AGREGA PAGINACION
+        if ($post["length"] != -1) {
+            $query1 = " LIMIT " . $post["start"] . ", " . $post["length"];
+        }
+
+        $stmt = Conexion::conectar()->prepare($query);
+
+        // var_dump($query);
+
+        $stmt->execute();
+
+        $number_filter_row = $stmt->rowCount();
+
+        $stmt =  Conexion::conectar()->prepare($query . $query1);
+
+        $stmt->execute();
+
+        $results = $stmt->fetchAll(PDO::FETCH_NAMED);
+
+        $data = array();
+
+        foreach ($results as $row) {
+            $sub_array = array();
+            $sub_array[] = $row['opciones']; //0
+            $sub_array[] = $row['id']; //1
+            $sub_array[] = $row['comprobante']; //2
+            $sub_array[] = $row['fecha_emision']; //3
+            $sub_array[] = $row['forma_pago']; //4
+            $sub_array[] = $row['iva']; //5
+            $sub_array[] = $row['importe_total']; //6
+            $data[] = $sub_array;
+        }
+
+
+        // $stmt = Conexion::conectar()->prepare("SELECT v.id,
+        //                                                 concat(v.serie,'-',v.correlativo) as comprobante, 
+        //                                                 v.fecha_emision,
+        //                                                 concat(mon.simbolo,format(v.total_iva,2)) as iva,
+        //                                                 concat(mon.simbolo,format(v.importe_total,2)) as importe_total
+        //                                         from venta v inner join serie s on v.id_serie = s.id
+        //                                                     inner join moneda mon on mon.id = v.id_moneda
+        //                                         where s.id_tipo_comprobante = '03'
+        //                                         AND date(v.fecha_emision) = :fechaHoy");
+
+        // $stmt->bindParam(":fechaHoy", $fechaHoy, PDO::PARAM_STR);
+        // $stmt->execute();
+
+        // return $stmt->fetchAll();
+        $stmt = Conexion::conectar()->prepare(" SELECT 1
+                                                from venta v inner join serie s on v.id_serie = s.id
+                                                where s.id_tipo_comprobante = '03'");
+
+        $stmt->execute();
+
+        $count_all_data = $stmt->rowCount();
+
+        $clientes = array(
+            'draw' => $post['draw'],
+            "recordsTotal" => $count_all_data,
+            "recordsFiltered" => $number_filter_row,
+            "data" => $data
+        );
+
+        return $clientes;
+    }
+
+    static public function mdlObtenerVentasDia($post)
+    {
+        // Verificar los datos recibidos
+        error_log("Datos recibidos: " . print_r($post, true));
+    
+        // Preparar la consulta
+        $stmt = Conexion::conectar()->prepare(" SELECT
+                                                    SUM(v.importe_total) AS total_ventas_dia
+                                                FROM venta v
+                                                WHERE DATE(v.fecha_emision) = CURDATE()");
+    
+        // Ejecutar la consulta
+        $stmt->execute();
+    
+        // Verificar el resultado de la consulta
+        $result = $stmt->fetch();
+        error_log("Resultado de la consulta: " . print_r($result, true));
+    
+        // Retornar el resultado
+        return $result;
     }
 
     /* =========================================================================================

@@ -195,8 +195,6 @@ if (isset($_POST["accion"])) {
                 if ($venta['forma_pago'] == 'Credito') {
                     $insert_cuotas = VentasModelo::mdlInsertarCuotas($id_venta, $cuotas);
                 }
-
-                
             } else {
 
                 /*****************************************************************************************
@@ -215,7 +213,6 @@ if (isset($_POST["accion"])) {
                     $respuesta['msj'] = "Error al generar la venta";
                     echo json_encode($respuesta);
                 }
-
             }
 
             break;
@@ -303,6 +300,24 @@ if (isset($_POST["accion"])) {
 
             echo json_encode($response, JSON_UNESCAPED_UNICODE);
 
+            break;
+
+        case 'obtener_listado_boletas_x_dia':
+
+            $response = VentasModelo::mdlObtenerListadoBoletasPorDia($_POST);
+            echo json_encode($response, JSON_UNESCAPED_UNICODE);
+            break;
+
+        case 'obtener_listado_boletas_x_mes':
+
+            $response = VentasModelo::mdlObtenerListadoBoletasPorMes($_POST);
+            echo json_encode($response, JSON_UNESCAPED_UNICODE);
+            break;
+
+        case 'obtener_ventas_dia':
+            
+            $response = VentasModelo::mdlObtenerVentasDia($_POST);
+            echo json_encode($response, JSON_UNESCAPED_UNICODE);
             break;
 
         case 'obtener_detalle_venta':
@@ -426,7 +441,7 @@ if (isset($_GET["accion"])) {
             $pdf->Cell(70, 5, utf8_decode("--------------------------------------------------------------------------------------------------"), 0, 0, 'C');
             $pdf->Ln();
             //FIN DETALLE DE LA VENTA
-            
+
 
             //INICIO RESUMEN IMPORTES
             $pdf->SetFont('Arial', 'B', 6);
@@ -512,6 +527,5 @@ if (isset($_GET["accion"])) {
             $pdf->Output();
 
             break;
-
     }
 }
