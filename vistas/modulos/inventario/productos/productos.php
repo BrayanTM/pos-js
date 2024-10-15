@@ -138,7 +138,7 @@
     var operacion_stock = ''; // permitar definir si vamos a sumar o restar al stock (1: sumar, 2:restar)
 
     $(document).ready(function() {
-        
+
         fnc_MostrarLoader()
 
         fnc_InicializarFormulario();
@@ -271,6 +271,9 @@
                     title: function() {
                         var printTitle = 'LISTADO DE PRODUCTOS';
                         return printTitle
+                    },
+                    exportOptions: {
+                        columns: [3, 5, 6, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
                     }
                 },
                 {
@@ -278,6 +281,9 @@
                     title: function() {
                         var printTitle = 'LISTADO DE PRODUCTOS';
                         return printTitle
+                    },
+                    exportOptions: {
+                        columns: [3, 5, 6, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
                     }
                 }, 'pageLength'
             ],

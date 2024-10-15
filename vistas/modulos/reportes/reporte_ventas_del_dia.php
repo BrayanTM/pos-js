@@ -36,9 +36,9 @@
 
                     </ul>
 
-                    <h3 class="ventas_dia mt-2" id="ventas_del_dia">Ventas del Día: Q. 0.00</h3>
-
                 </div>
+
+                <h3 class="ventas_dia" id="ventas_del_dia" style="text-align: center;">Ventas del Día: Q. 0.00</h3>
 
                 <div class="card-body py-1">
 
@@ -135,6 +135,9 @@
                 title: function() {
                     var printTitle = 'REPORTE DE VENTAS DEL DÍA';
                     return printTitle
+                },
+                exportOptions: {
+                    columns: [2, 3, 4, 5, 6]
                 }
             }, 'pageLength'],
             pageLength: 10,

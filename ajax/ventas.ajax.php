@@ -315,8 +315,14 @@ if (isset($_POST["accion"])) {
             break;
 
         case 'obtener_ventas_dia':
-            
+
             $response = VentasModelo::mdlObtenerVentasDia($_POST);
+            echo json_encode($response, JSON_UNESCAPED_UNICODE);
+            break;
+
+        case 'obtener_ventas_mes':
+
+            $response = VentasModelo::mdlObtenerVentasMes($_POST);
             echo json_encode($response, JSON_UNESCAPED_UNICODE);
             break;
 

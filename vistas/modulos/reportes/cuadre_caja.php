@@ -199,7 +199,7 @@ M A I N   C O N T E N T
                     columns: [3, 4, 5, 6, 7, 8, 9, 10]
                 }
             }],
-            pageLength: [10, 25, 50, 100, 200, 500, 1000],
+            pageLength: [10, 25, 50, 100],
             pageLength: 10,
             ajax: {
                 url: "ajax/arqueo_caja.ajax.php",

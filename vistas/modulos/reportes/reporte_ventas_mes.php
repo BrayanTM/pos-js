@@ -35,7 +35,10 @@
                         </li>
 
                     </ul>
+
                 </div>
+
+                <h3 class="ventas_mes" id="ventas_del_mes" style="text-align: center;">Ventas del Mes: Q. 0.00</h3>
 
                 <div class="card-body py-1">
 
@@ -77,66 +80,7 @@
     </div>
 
 </div>
-
-
-<!-- =============================================================================================================================
-M O D A L   E N V I A R   C O R R E O
-===============================================================================================================================-->
-<div class="modal fade" id="mdlEnviarComprobanteCorreo" role="dialog" tabindex="-1">
-
-    <div class="modal-dialog modal-md" role="document">
-
-        <!-- contenido del modal -->
-        <div class="modal-content">
-
-            <!-- cabecera del modal -->
-            <div class="modal-header my-bg py-1">
-
-                <h5 class="modal-title text-white text-lg">Enviar comprobante a:</h5>
-
-                <button type="button" class="btn btn-danger btn-sm text-white text-sm" data-bs-dismiss="modal">
-                    <i class="fas fa-times text-sm m-0 p-0"></i>
-                </button>
-
-            </div>
-
-            <!-- cuerpo del modal -->
-            <div class="modal-body">
-
-                <div class="row mb-2">
-
-                    <!-- EMAIL -->
-                    <div class="col-12 mb-2">
-                        <label class="mb-0 ml-1 text-sm my-text-color"><i class="fas fa-list-ol mr-1 my-text-color"></i>Email</label>
-                        <input type="email" style="border-radius: 20px;" class="form-control form-control-sm" id="email" name="email" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-
-                    </div>
-
-                </div>
-
-                <div class="row mt-3">
-
-                    <div class="col-12 text-center">
-
-                        <a class="btn btn-sm btn-success fw-bold " id="btnEnviarComprobanteCorreo" style="position: relative; width: 200px;">
-                            <span class="text-button">ENVIAR CORREO</span>
-                            <span class="btn fw-bold icon-btn-success ">
-                                <i class="fas fa-save fs-5 text-white m-0 p-0"></i>
-                            </span>
-                        </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-</div>
+<!-- /.content -->
 
 <script>
     var $id_venta_para_correo;
@@ -151,6 +95,7 @@ M O D A L   E N V I A R   C O R R E O
         // I N I C I A L I Z A R   F O R M U L A R I O 
         /*===================================================================*/
         fnc_InicializarFormulario();
+        fnc_cargar_ventas_mes();
 
         /* ======================================================================================
         I N I C I O   E V E N T O S   D A T A T A B L E   B O L E T A S
@@ -166,9 +111,9 @@ M O D A L   E N V I A R   C O R R E O
         F I N   E V E N T O S   D A T A T A B L E   B O L E T A S
         ====================================================================================== */
 
-    })
+    }) // FIN DEL DOCUMENT READY
 
-
+    
     function fnc_InicializarFormulario() {
         fnc_CargarDataTableListadoBoletas();
     }
@@ -188,8 +133,11 @@ M O D A L   E N V I A R   C O R R E O
             buttons: [{
                 extend: 'excel',
                 title: function() {
-                    var printTitle = 'LISTADO DE BOLETAS';
+                    var printTitle = 'REPORTE DE VENTAS DEL MES';
                     return printTitle
+                },
+                exportOptions: {
+                    columns: [2, 3, 4, 5, 6]
                 }
             }, 'pageLength'],
             pageLength: 10,
@@ -199,7 +147,7 @@ M O D A L   E N V I A R   C O R R E O
             ajax: {
                 url: 'ajax/ventas.ajax.php',
                 data: {
-                    'accion': 'obtener_listado_boletas'
+                    'accion': 'obtener_listado_boletas_x_mes'
                 },
                 type: 'POST'
             },
@@ -244,7 +192,7 @@ M O D A L   E N V I A R   C O R R E O
 
     function fnc_ImprimirBoleta($id_venta) {
 
-        window.open($ruta+'vistas/modulos/impresiones/generar_ticket.php?id_venta=' + $id_venta,
+        window.open($ruta + 'vistas/modulos/impresiones/generar_ticket.php?id_venta=' + $id_venta,
             "ModalPopUp",
             "toolbar=no," +
             "scrollbars=no," +
@@ -258,8 +206,28 @@ M O D A L   E N V I A R   C O R R E O
             "top=200");
     }
 
+    function fnc_cargar_ventas_mes() {
+        $.ajax({
+            url: 'ajax/ventas.ajax.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                'accion': 'obtener_ventas_mes'
+            },
+            success: function(respuesta) {
+                // Verificar la respuesta en la consola
+                console.log(respuesta);
+
+                // Obtener el total de ventas del día
+                var total_ventas_mes = parseFloat(respuesta.total_ventas_mes);
+
+                // Actualizar el HTML con el total de ventas del día
+                $("#ventas_del_mes").html('VENTAS DEL MES: Q. ' + total_ventas_mes.toFixed(2).toString().replace(/\d(?=(\d{3})+\.)/g, "$&,"));
+            }
+        });
+    }
+
     /* ======================================================================================
     F I N   F U N C I O N E S   D A T A T A B L E   B O L E T A S
     ====================================================================================== */
-
 </script>

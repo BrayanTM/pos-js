@@ -190,6 +190,9 @@ M O D A L   E N V I A R   C O R R E O
                 title: function() {
                     var printTitle = 'LISTADO DE BOLETAS';
                     return printTitle
+                },
+                exportOptions: {
+                    columns: [2, 3, 4, 5, 6]
                 }
             }, 'pageLength'],
             pageLength: 10,
