@@ -38,5 +38,11 @@ if (isset($_POST["accion"])) {
             $response = ReportesModelo::mdlReporteRegistroVentas($_POST["comprobantes"], $_POST["cliente"], $_POST["fecha_desde"], $_POST["fecha_hasta"]);
             echo json_encode($response, JSON_UNESCAPED_UNICODE);
             break;
+
+        case 'reporte_ventas_productos_mas_vendidos':
+
+            $response = ReportesModelo::mdlReporteVentasProductosMasVendidos($_POST);
+            echo json_encode($response, JSON_UNESCAPED_UNICODE);
+            break;
     }
 }

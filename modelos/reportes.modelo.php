@@ -190,8 +190,8 @@ class ReportesModelo
         $column = ["categoria", "cantidad", "precio_venta", "total_venta", "ganancias"];
 
         $query = " SELECT c.descripcion as categoria, 
-                            round(sum(ifnull(dv.cantidad,0)),2) as cantidad,
-                            round(sum(ifnull(dv.valor_unitario,0)),2) as precio_venta,
+                            round(sum(ifnull(dv.cantidad,0)),0) as cantidad,
+                            round(sum(ifnull(dv.precio_unitario,0)),2) as precio_venta,
                             round(sum(ifnull(dv.importe_total,0)),2) as total_venta,
                             round(sum(ifnull(dv.importe_total,0)) - sum(ifnull(dv.costo_unitario,0)*ifnull(dv.cantidad,0)),2) as ganancias
                     FROM venta v inner join usuarios u on u.id_usuario = v.id_usuario
@@ -270,8 +270,8 @@ class ReportesModelo
 
         $query = " SELECT p.codigo_producto as codigo_producto, 
                         p.descripcion as producto,
-                        round(sum(ifnull(dv.cantidad,0)),2) as cantidad,
-                        round(sum(ifnull(dv.valor_unitario,0)),2) as precio_venta,
+                        round(sum(ifnull(dv.cantidad,0)),0) as cantidad,
+                        round(sum(ifnull(dv.precio_unitario,0)),2) as precio_venta,
                         round(sum(ifnull(dv.importe_total,0)),2) as total_venta,
                         round(sum(ifnull(dv.importe_total,0)) - sum(ifnull(dv.costo_unitario,0)*ifnull(dv.cantidad,0)),2) as ganancias
                     FROM venta v inner join usuarios u on u.id_usuario = v.id_usuario
@@ -322,7 +322,7 @@ class ReportesModelo
 
         $stmt = Conexion::conectar()->prepare(" SELECT p.codigo_producto as codigo_producto, 
                                                         p.descripcion as producto,
-                                                        round(sum(ifnull(dv.cantidad,0)),2) as cantidad,
+                                                        round(sum(ifnull(dv.cantidad,0)),0) as cantidad,
                                                         round(sum(ifnull(dv.valor_unitario,0)),2) as precio_venta,
                                                         round(sum(ifnull(dv.importe_total,0)),2) as total_venta,
                                                         round(sum(ifnull(dv.importe_total,0)) - sum(ifnull(dv.costo_unitario,0)*ifnull(dv.cantidad,0)),2) as ganancias
@@ -388,5 +388,86 @@ class ReportesModelo
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
+
+    static public function mdlReporteVentasProductosMasVendidos($post)
+    {
+        $column = ["codigo_producto", "producto", "cantidad", "precio_venta", "total_venta", "ganancias"];
+
+        $query = " SELECT p.codigo_producto as codigo_producto, 
+                        p.descripcion as producto,
+                        round(sum(ifnull(dv.cantidad,0)),0) as cantidad,
+                        round(sum(ifnull(dv.precio_unitario,0)),2) as precio_venta,
+                        round(sum(ifnull(dv.importe_total,0)),2) as total_venta,
+                        round(sum(ifnull(dv.importe_total,0)) - sum(ifnull(dv.costo_unitario,0)*ifnull(dv.cantidad,0)),2) as ganancias
+                    FROM venta v inner join usuarios u on u.id_usuario = v.id_usuario
+                                inner join detalle_venta dv on dv.id_venta = v.id
+                                inner join productos p on p.codigo_producto = dv.codigo_producto";
+
+        if (isset($post["search"]["value"])) {
+            $query .= ' WHERE p.codigo_producto like "%' . $post["search"]["value"] . '%" 
+                    or p.descripcion like "%' . $post["search"]["value"] . '%" GROUP BY p.codigo_producto ';
+        }
+
+        if (isset($post["order"])) {
+            $query .= ' ORDER BY ' . $column[$post['order']['0']['column']] . ' ' . $post['order']['0']['dir'] . ' ';
+        } else {
+            $query .= ' ORDER BY sum(ifnull(dv.cantidad,0)) desc ';
+        }
+
+        //SE AGREGA PAGINACION
+        if ($post["length"] != -1) {
+            $query1 = " LIMIT " . $post["start"] . ", " . $post["length"];
+        }
+
+        $stmt = Conexion::conectar()->prepare($query);
+
+        $stmt->execute();
+
+        $number_filter_row = $stmt->rowCount();
+
+        $stmt =  Conexion::conectar()->prepare($query . $query1);
+
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+
+        $data = array();
+
+        foreach ($results as $row) {
+            $sub_array = array();
+            $sub_array[] = $row['codigo_producto'];
+            $sub_array[] = $row['producto'];
+            $sub_array[] = $row['cantidad'];
+            $sub_array[] = $row['precio_venta'];
+            $sub_array[] = $row['total_venta'];
+            $sub_array[] = $row['ganancias'];
+            $data[] = $sub_array;
+        }
+
+        $stmt = Conexion::conectar()->prepare("SELECT p.codigo_producto as codigo_producto, 
+                                                        p.descripcion as producto,
+                                                        round(sum(ifnull(dv.cantidad,0)),0) as cantidad,
+                                                        round(sum(ifnull(dv.precio_unitario,0)),2) as precio_venta,
+                                                        round(sum(ifnull(dv.importe_total,0)),2) as total_venta,
+                                                        round(sum(ifnull(dv.importe_total,0)) - sum(ifnull(dv.costo_unitario,0)*ifnull(dv.cantidad,0)),2) as ganancias
+                                                FROM venta v inner join usuarios u on u.id_usuario = v.id_usuario
+                                                            inner join detalle_venta dv on dv.id_venta = v.id
+                                                            inner join productos p on p.codigo_producto = dv.codigo_producto
+                                                GROUP BY p.codigo_producto
+                                                ORDER BY sum(ifnull(dv.cantidad,0)) desc");
+
+        $stmt->execute();
+
+        $count_all_data = $stmt->rowCount();
+
+        $output = array(
+            'draw' => $post['draw'],
+            "recordsTotal" => $count_all_data,
+            "recordsFiltered" => $number_filter_row,
+            "data" => $data
+        );
+
+        return $output;
     }
 }
