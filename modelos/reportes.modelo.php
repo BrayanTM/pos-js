@@ -362,7 +362,7 @@ class ReportesModelo
                                                         v.total_operaciones_exoneradas as importe_total_ope_exo,
                                                         v.total_operaciones_inafectas as importe_total_ope_ina,
                                                         0 as isc,
-                                                        v.total_igv as igv,
+                                                        v.total_iva as iva,
                                                         0 as otros_trib_cargos_no_parte_base_imp,
                                                         v.importe_total as imp_total_comprobante_pago,
                                                         1 as tipo_cambio,

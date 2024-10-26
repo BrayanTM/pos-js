@@ -454,8 +454,8 @@ class ComprasModelo
                                                         dc.impuesto, 
                                                         total,
                                                         p.id_tipo_afectacion_iva,
-                                                        case when p.id_tipo_afectacion_iva = 10 then 1.18 else 1 end as factor_iva,
-                                                        case when p.id_tipo_afectacion_iva = 10 then 0.18 else 0 end as porcentaje_iva
+                                                        case when p.id_tipo_afectacion_iva = 12 then 1.12 else 1 end as factor_iva,
+                                                        case when p.id_tipo_afectacion_iva = 12 then 0.12 else 0 end as porcentaje_iva
                                                 FROM compras c inner join detalle_compra dc on c.id = dc.id_compra
                                                                 inner join productos p on p.codigo_producto = dc.codigo_producto
                                                             --	inner join tipo_afectacion_iva tai on tai.id = p.id_tipo_afectacion_iva

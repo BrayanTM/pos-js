@@ -92,7 +92,7 @@ class ProductosModelo
 
         /*=====================================================================================
         ELIMINAR TABLAS DEL SISTEMA (venta - detalle_venta - kardex - categorias - 
-                                    tipo_afectacion_igv - codigo_unidad_medida - productos)
+                                    tipo_afectacion_iva - codigo_unidad_medida - productos)
         =====================================================================================*/
         try {
             $stmt = $dbh->prepare("call prc_truncate_all_tables()");
@@ -511,7 +511,7 @@ class ProductosModelo
                                                 upper(c.descripcion) as nombre_categoria,
                                                 upper(p.descripcion) as producto,
                                                 imagen,
-                                                p.id_tipo_afectacion_igv,
+                                                p.id_tipo_afectacion_iva,
                                                 upper(tai.descripcion) as tipo_afectacion_iva,
                                                 p.id_unidad_medida,
                                                 upper(cum.descripcion) as unidad_medida,

@@ -102,7 +102,6 @@ M A I N   C O N T E N T
         <div class="row pt-3 pb-3">
 
             <div class="col-12">
-<<<<<<< HEAD
                 <div class="table-responsive">
                     <table id="tbl_arqueo_caja" class="table table-striped w-100 shadow border border-secondary">
                         <thead class="bg-main">
@@ -125,30 +124,6 @@ M A I N   C O N T E N T
                         </tbody>
                     </table>
                 </div>
-=======
-
-                <table id="tbl_arqueo_caja" class="table table-striped w-100 shadow border border-secondary">
-                    <thead class="bg-main">
-                        <tr style="font-size: 15px;">
-                            <th class="text-cetner"></th> <!-- 0 -->
-                            <th>ID</th> <!-- 1 -->
-                            <th>Id Usu</th> <!-- 2 -->
-                            <th>Usuario</th> <!-- 3 -->
-                            <th>Fec. Apertura</th> <!-- 4 -->
-                            <th>Fec. Cierre</th> <!-- 5 -->
-                            <th>Monto Apertura</th> <!-- 6 -->
-                            <th>Ingresos</th> <!-- 7 -->
-                            <th>Devoluciones</th> <!-- 8 -->
-                            <th>Gastos</th> <!-- 9 -->
-                            <th>Monto Final</th> <!-- 10 -->
-                            <th>Estado</th> <!-- 11 -->
-                        </tr>
-                    </thead>
-                    <tbody class="text-small">
-                    </tbody>
-                </table>
-
->>>>>>> 219f02022596ad2ac7cf4a2e384526749e2f3a2f
             </div>
 
         </div>

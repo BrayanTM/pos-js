@@ -248,6 +248,7 @@
 
                                     <!-- LISTADO QUE CONTIENE LOS PRODUCTOS QUE SE VAN AGREGANDO PARA LA COMPRA -->
                                     <div class="col-md-12 mt-2">
+
                                         <table id="tbl_ListadoProductos" class="display nowrap table-striped w-100 shadow" style="font-size: 14px;">
                                             <thead class="bg-main">
                                                 <tr>
@@ -469,14 +470,6 @@
         I N I C I O   E V E N T O S   D A T A T A B L E   L I S T A D O   D E   P R O D U C T O S
         ====================================================================================== */
 
-<<<<<<< HEAD
-=======
-        // $("#producto").change(function() {
-
-        //     CargarProductos();
-
-        // });
->>>>>>> 219f02022596ad2ac7cf4a2e384526749e2f3a2f
 
         // EVENTO PARA MODIFICAR EL PRECIO DE VENTA DEL PRODUCTO
         $('#tbl_ListadoProductos tbody').on('click', '.dropdown-item', function() {
