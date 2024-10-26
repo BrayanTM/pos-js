@@ -1,7 +1,7 @@
 <?php
-    // include "ajax/rutas.ajax.php";
-    // $ruta = Rutas::RutaProyecto();
-    // var_dump($ruta);
+// include "ajax/rutas.ajax.php";
+// $ruta = Rutas::RutaProyecto();
+// var_dump($ruta);
 ?>
 
 <!-- Content Header (Page header) -->
@@ -234,26 +234,6 @@
 
             <div class="col-lg-6">
 
-                <!-- <div class="card card-gray shadow">
-                   
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table" id="tbl_productos_mas_vendidos">
-                                <thead>
-                                    <tr class="text-danger">
-                                        <th>Producto</th>
-                                        <th class="text-center">Cantidad</th>
-                                        <th class="text-center">Ventas</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div> -->
-
                 <div class="card card-gray shadow mt-4">
 
                     <div class="card-body px-3 py-3" style="position: relative;">
@@ -290,23 +270,6 @@
             </div>
 
             <div class="col-lg-6">
-                <!-- <div class="card card-gray shadow">
-                    
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table" id="tbl_productos_poco_stock">
-                                <thead>
-                                    <tr class="text-danger">                           
-                                        <th>Producto</th>
-                                        <th class="text-center">Stock Actual</th>
-                                        <th class="text-center">Mín. Stock</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div> -->
 
                 <div class="card card-gray shadow mt-4">
 
@@ -318,17 +281,18 @@
 
                             <div class="col-12">
 
-                                <table class="table" id="tbl_productos_poco_stock">
-                                    <thead>
-                                        <tr class="text-danger">
-                                            <th>Producto</th>
-                                            <th class="text-center">Stock Actual</th>
-                                            <th class="text-center">Mín. Stock</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-
+                                <div class="table-responsive">
+                                    <table class="table" id="tbl_productos_poco_stock">
+                                        <thead>
+                                            <tr class="text-danger">
+                                                <th>Producto</th>
+                                                <th class="text-center">Stock Actual</th>
+                                                <th class="text-center">Mín. Stock</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
                             </div>
 
                         </div>
@@ -390,7 +354,7 @@
 
         fnc_OcultarLoader();
 
-    })
+    }) // fin document ready
 
     function fnc_MostrarLoader() {
         $(".loading").removeClass('d-none');
@@ -449,6 +413,7 @@
                 var mes_anterior = moment(mes_actual, "DD-MM-YYYY").add(-1, 'months').format('MM/YYYY');
 
                 var total_ventas_mes = 0;
+                // var total_ventas_mes_ant = 0;
 
                 for (let i = 0; i < respuesta.length; i++) {
 
@@ -456,6 +421,7 @@
                     total_venta.push(respuesta[i]['total_venta']);
                     total_venta_ant.push(respuesta[i]['total_venta_ant']);
                     total_ventas_mes = parseFloat(total_ventas_mes) + parseFloat(respuesta[i]['total_venta']);
+                    // total_ventas_mes_ant += parseFloat(total_ventas_mes_ant[i]);
 
                 }
 

@@ -169,6 +169,9 @@
                     title: function() {
                         var printTitle = 'LISTADO DE CATEGORÍAS';
                         return printTitle
+                    },
+                    exportOptions: {
+                        columns: [2, 3, 4]
                     }
                 }, 'pageLength'
             ],

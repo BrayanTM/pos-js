@@ -1,3 +1,6 @@
+<?php
+date_default_timezone_set('America/Guatemala');
+?>
 <!-- =============================================================================================================================
 C O N T E N T   H E A D E R
 ===============================================================================================================================-->
@@ -6,7 +9,7 @@ C O N T E N T   H E A D E R
         <div class="row mb-2">
             <div class="col-sm-6">
                 <h2 class="m-0 mb-2 fw-bold">ADMINISTRAR CAJA</h2>
-                <span>Fecha Caja: <?php echo date("Y-m-d"); ?> <span class="bg-success p-1 px-3 mx-3 rounded-pill" id="estado_caja"></span></span>
+                <span>Fecha Caja: <?php echo date("Y-m-d H:i:s"); ?> <span class="bg-success p-1 px-3 mx-3 rounded-pill" id="estado_caja"></span></span>
             </div><!-- /.col -->
             <div class="col-sm-6 d-none d-md-block">
                 <ol class="breadcrumb float-sm-right">

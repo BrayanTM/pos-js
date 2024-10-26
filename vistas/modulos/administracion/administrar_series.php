@@ -54,11 +54,11 @@
                                     <table id="tbl_series" class="table table-striped w-100 shadow border border-secondary">
                                         <thead class="bg-main">
                                             <tr>
-                                                <th>id</th>
-                                                <th>Tipo Comprobante</th>
-                                                <th>Serie</th>
-                                                <th>Correlativo</th>
-                                                <th>Estado</th>
+                                                <th>id</th> <!--0-->
+                                                <th>Tipo Comprobante</th> <!--1-->
+                                                <th>Serie</th> <!--2-->
+                                                <th>Correlativo</th> <!--3-->
+                                                <th>Estado</th> <!--4-->
                                             </tr>
                                         </thead>
                                     </table>

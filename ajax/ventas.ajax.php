@@ -1,6 +1,6 @@
 <?php
 
-setlocale(LC_TIME, 'es_GT.UTF-8');
+date_default_timezone_set('America/Guatemala');
 
 require_once "../modelos/ventas.modelo.php";
 require_once "../modelos/productos.modelo.php";
@@ -195,8 +195,6 @@ if (isset($_POST["accion"])) {
                 if ($venta['forma_pago'] == 'Credito') {
                     $insert_cuotas = VentasModelo::mdlInsertarCuotas($id_venta, $cuotas);
                 }
-
-                
             } else {
 
                 /*****************************************************************************************
@@ -215,7 +213,6 @@ if (isset($_POST["accion"])) {
                     $respuesta['msj'] = "Error al generar la venta";
                     echo json_encode($respuesta);
                 }
-
             }
 
             break;
@@ -298,11 +295,51 @@ if (isset($_POST["accion"])) {
             echo json_encode($response, JSON_UNESCAPED_UNICODE);
             break;
 
+        case 'obtener_listado_facturas':
+
+            $response = VentasModelo::mdlObtenerListadoFacturas($_POST);
+            echo json_encode($response, JSON_UNESCAPED_UNICODE);
+            break;
+
+
+        case "obtener_cuotas_x_id_venta":
+
+            $response = VentasModelo::mdlObtenerCuotasPorIdVenta($_POST["id_venta"]);
+
+            echo json_encode($response, JSON_UNESCAPED_UNICODE);
+
+            break;
+
+        case "pagar_cuota":
 
             $response = VentasModelo::mdlPagarCuotas($_POST["id_venta"], $_POST["monto_a_pagar"], $_POST["medio_pago"]);
 
             echo json_encode($response, JSON_UNESCAPED_UNICODE);
 
+            break;
+
+        case 'obtener_listado_boletas_x_dia':
+
+            $response = VentasModelo::mdlObtenerListadoComprobantesPorDia($_POST);
+            echo json_encode($response, JSON_UNESCAPED_UNICODE);
+            break;
+
+        case 'obtener_listado_boletas_x_mes':
+
+            $response = VentasModelo::mdlObtenerListadoComprobantesPorMes($_POST);
+            echo json_encode($response, JSON_UNESCAPED_UNICODE);
+            break;
+
+        case 'obtener_ventas_dia':
+
+            $response = VentasModelo::mdlObtenerVentasDia($_POST);
+            echo json_encode($response, JSON_UNESCAPED_UNICODE);
+            break;
+
+        case 'obtener_ventas_mes':
+
+            $response = VentasModelo::mdlObtenerVentasMes($_POST);
+            echo json_encode($response, JSON_UNESCAPED_UNICODE);
             break;
 
         case 'obtener_detalle_venta':
@@ -330,6 +367,43 @@ if (isset($_POST["accion"])) {
 if (isset($_GET["accion"])) {
 
     switch ($_GET["accion"]) {
+
+        case 'generar_factura_a4':
+
+            require("../phpqrcode/qrlib.php");
+
+            $venta = VentasModelo::mdlObtenerVentaPorIdFormatoA4($_GET["id_venta"]);
+            $detalle_venta = VentasModelo::mdlObtenerDetalleVentaPorId($_GET["id_venta"]);
+
+            if ($venta["forma_pago"] == "Credito") {
+                $cuotas = VentasModelo::mdlObtenerCuotas($_GET["id_venta"]);
+            }
+
+            $text_qr = $venta["nit"] . " | " . $venta["id_tipo_comprobante"] . " | " . $venta["serie"] . " | " . $venta["correlativo"] . " | " . $venta["total_iva"] . " | " . $venta["importe_total"] . " | " . $venta["fecha_emision"] . " | " . $venta["id_tipo_documento"] . " | " . $venta["nro_documento"];
+            $ruta_qr = "../fe/qr/" . $venta["nit"] . $venta["id_tipo_comprobante"] . $venta["serie"]  .  $venta["correlativo"] . '.png';
+
+            QRcode::png($text_qr, $ruta_qr, 'Q', 15, 0);
+
+            ob_start();
+
+            require "impresion_factura_a4.php";
+
+            $html = ob_get_clean();
+
+            $dompdf = new Dompdf();
+
+            $dompdf->loadHtml($html);
+            $dompdf->setpaper('A4');
+            $dompdf->render();
+            $dompdf->stream('factura_a4.pdf', array('Attachment' => false));
+
+            // $output = $dompdf->output();
+            file_put_contents('../fe/facturas/' .  $venta["nit"] . '-' . trim($venta["id_tipo_comprobante"]) .  '-' . trim($venta["serie"])  .   '-' . $venta["correlativo"] . '.pdf', $dompdf->output());
+
+            $_SESSION["compra"] = '';
+            $_SESSION["cliente"] = ''; 
+
+            break;
 
         case 'generar_ticket':
 
@@ -426,7 +500,7 @@ if (isset($_GET["accion"])) {
             $pdf->Cell(70, 5, utf8_decode("--------------------------------------------------------------------------------------------------"), 0, 0, 'C');
             $pdf->Ln();
             //FIN DETALLE DE LA VENTA
-            
+
 
             //INICIO RESUMEN IMPORTES
             $pdf->SetFont('Arial', 'B', 6);
@@ -512,6 +586,5 @@ if (isset($_GET["accion"])) {
             $pdf->Output();
 
             break;
-
     }
 }

@@ -34,6 +34,11 @@
                             <a class="nav-link active my-0" id="listado-boletas-tab" data-toggle="pill" href="#listado-boletas" role="tab" aria-controls="listado-boletas" aria-selected="false"><i class="fas fa-list"></i> Boletas</a>
                         </li>
 
+                        <!-- TAB LISTADO FACTURAS -->
+                        <li class="nav-item">
+                            <a class="nav-link my-0" id="listado-facturas-tab" data-toggle="pill" href="#listado-facturas" role="tab" aria-controls="listado-facturas" aria-selected="true"><i class="fas fa-list"></i> Facturas</a>
+                        </li>
+
                     </ul>
                 </div>
 
@@ -66,6 +71,30 @@
                             </div>
 
                         </div>
+
+                        <!-- TAB CONTENT FACTURAS -->
+                        <div class="tab-pane fade" id="listado-facturas" role="tabpanel" aria-labelledby="listado-facturas-tab">
+
+                            <div class="row my-2">
+
+                                <!--LISTADO DE FACTURAS -->
+                                <div class="col-md-12">
+
+                                    <table id="tbl_facturas" class="table shadow border border-secondary" style="width:100%">
+                                        <thead class="bg-main text-left">
+                                            <th></th>
+                                            <th>Id</th>
+                                            <th>Comprob.</th>
+                                            <th>Fec. Emisión</th>
+                                            <th>Forma Pago</th>
+                                            <th>IVA</th>
+                                            <th>Total</th>
+                                        </thead>
+                                    </table>
+
+                                </div>
+
+                            </div>
 
                     </div>
                 </div>
@@ -166,11 +195,31 @@ M O D A L   E N V I A R   C O R R E O
         F I N   E V E N T O S   D A T A T A B L E   B O L E T A S
         ====================================================================================== */
 
+
+         /* ======================================================================================
+        I N I C I O   E V E N T O S   D A T A T A B L E   F A C T U R A S
+        ====================================================================================== */
+        $('#tbl_facturas tbody').on('click', '.btnImprimirFactura', function() {
+            var data = $('#tbl_facturas').DataTable().row($(this).parents('tr')).data();
+            $id_venta = data[1];
+            fnc_ImprimirFactura($id_venta)
+        })
+
+        $('#tbl_facturas tbody').on('click', '.btnImprimirFacturaA4', function() {
+            var data = $('#tbl_facturas').DataTable().row($(this).parents('tr')).data();
+            $id_venta = data[1];
+            fnc_ImprimirFacturaA4($id_venta)
+        })
+        /* ======================================================================================
+        F I N   E V E N T O S   D A T A T A B L E   F A C T U R A S
+        ====================================================================================== */
+
     })
 
 
     function fnc_InicializarFormulario() {
         fnc_CargarDataTableListadoBoletas();
+        fnc_CargarDataTableListadoFacturas();
     }
 
     /* ======================================================================================
@@ -190,6 +239,9 @@ M O D A L   E N V I A R   C O R R E O
                 title: function() {
                     var printTitle = 'LISTADO DE BOLETAS';
                     return printTitle
+                },
+                exportOptions: {
+                    columns: [2, 3, 4, 5, 6]
                 }
             }, 'pageLength'],
             pageLength: 10,
@@ -261,5 +313,102 @@ M O D A L   E N V I A R   C O R R E O
     /* ======================================================================================
     F I N   F U N C I O N E S   D A T A T A B L E   B O L E T A S
     ====================================================================================== */
+
+
+    /* ======================================================================================
+    I N I C I O   F U N C I O N E S   D A T A T A B L E   F A C T U R A S
+    ====================================================================================== */
+
+    function fnc_CargarDataTableListadoFacturas() {
+
+        if ($.fn.DataTable.isDataTable('#tbl_facturas')) {
+            $('#tbl_facturas').DataTable().destroy();
+            $('#tbl_facturas tbody').empty();
+        }
+
+        $("#tbl_facturas").DataTable({
+            dom: 'Bfrtip',
+            buttons: [{
+                extend: 'excel',
+                title: function() {
+                    var printTitle = 'LISTADO DE FACTURAS';
+                    return printTitle
+                },
+                exportOptions: {
+                    columns: [2, 3, 4, 5, 6]
+                }
+            }, 'pageLength'],
+            pageLength: 10,
+            processing: true,
+            serverSide: true,
+            order: [],
+            ajax: {
+                url: 'ajax/ventas.ajax.php',
+                data: {
+                    'accion': 'obtener_listado_facturas'
+                },
+                type: 'POST'
+            },
+            scrollX: true,
+            scrollY: "63vh",
+            columnDefs: [{
+                    "className": "dt-center",
+                    "targets": "_all"
+                },
+                {
+                    targets: [1],
+                    visible: false
+                },
+                {
+                    targets: 0,
+                    orderable: false,
+                    createdCell: function(td, cellData, rowData, row, col) {
+
+                        $options = `<div class="btn-group">
+                                
+                                <button class="btn btn-sm dropdown-toggle p-0 m-0 my-text-color fs-5" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-list-alt"></i>
+                                </button>
+
+                                <div class="dropdown-menu z-3">
+                                    <a class="dropdown-item btnImprimirFactura" style='cursor:pointer;'><i class='px-1 fas fa-print fs-5 text-secondary'></i> <span class='my-color'>Imprimir Factura (ticket)</span></a>  
+                                    <a class="dropdown-item btnImprimirFacturaA4" style='cursor:pointer;'><i class='px-1 fas fa-print fs-5 text-secondary'></i> <span class='my-color'>Imprimir Factura (A4)</span></a>  `
+
+                        $options = $options + `</div>
+                                    </div>`;
+
+                        $(td).html($options)
+                    }
+                },
+            ],
+            language: {
+                url: "ajax/language/spanish.json"
+            }
+        })
+
+        ajustarHeadersDataTables($("#tbl_facturas"));
+    }
+
+    function fnc_ImprimirFactura($id_venta) {
+        window.open($ruta+'vistas/modulos/impresiones/generar_ticket.php?id_venta=' + $id_venta,
+            "ModalPopUp",
+            "toolbar=no," +
+            "scrollbars=no," +
+            "location=no," +
+            "statusbar=no," +
+            "menubar=no," +
+            "resizable=0," +
+            "width=400," +
+            "height=600," +
+            "left = 450," +
+            "top=200");
+    }
+
+    function fnc_ImprimirFacturaA4($id_venta) {
+        window.open($ruta+'vistas/modulos/impresiones/generar_factura_a4.php?id_venta=' + $id_venta,
+            'fullscreen=yes' +
+            "resizable=0,"
+        );
+    }
 
 </script>

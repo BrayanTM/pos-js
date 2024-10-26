@@ -152,7 +152,7 @@
                                     <div class="col-12 col-md-6 mb-2">
                                         <label class="mb-0 ml-1 text-sm my-text-color"><i class="fas fa-id-card mr-1 my-text-color"></i> Nro Documento</label>
                                         <div class="input-group input-group-sm mb-3 ">
-                                            <span class="input-group-text btnConsultarDni" id="inputGroup-sizing-sm" style="cursor: pointer;"><i class="fas fa-search ml-1 text-white"></i></span>
+                                            <span class="input-group-text btnConsultarDpi" id="inputGroup-sizing-sm" style="cursor: pointer;"><i class="fas fa-search ml-1 text-white"></i></span>
                                             <input type="text" class="form-control form-control-sm" style="border-top-right-radius: 20px;border-bottom-right-radius: 20px;" aria-label="Sizing example input" id="nro_documento" name="nro_documento" placeholder="Ingrese Nro de documento" aria-describedby="inputGroup-sizing-sm" required>
                                             <div class="invalid-feedback">Ingrese el Nro de Documento</div>
                                         </div>
@@ -248,7 +248,6 @@
 
                                     <!-- LISTADO QUE CONTIENE LOS PRODUCTOS QUE SE VAN AGREGANDO PARA LA COMPRA -->
                                     <div class="col-md-12 mt-2">
-
                                         <table id="tbl_ListadoProductos" class="display nowrap table-striped w-100 shadow" style="font-size: 14px;">
                                             <thead class="bg-main">
                                                 <tr>
@@ -415,7 +414,7 @@
             fnc_ObtenerCorrelativo($("#serie").val())
         })
 
-        $(".btnConsultarDni").on('click', function() {
+        $(".btnConsultarDpi").on('click', function() {
             fnc_ConsultarNroDocumento($("#nro_documento").val());
         })
 
@@ -440,10 +439,16 @@
         $("#total_recibido").on("keyup", function() {
             $total_venta = parseFloat($("#resumen_total_venta").html().replace('Q', '')).toFixed(2);
 
+            console.log('TOTAL V.', $total_venta)
+
             $total_recibido = parseFloat($("#total_recibido").val());
+
+            console.log('TOTAL R.', $total_recibido)
 
             if ($total_recibido >= $total_venta) {
                 $("#vuelto").val(parseFloat($total_recibido - $total_venta).toFixed(2));
+                
+                console.log('VUELTO', $total_recibido - $total_venta)
             }
         })
 
@@ -463,6 +468,8 @@
         /* ======================================================================================
         I N I C I O   E V E N T O S   D A T A T A B L E   L I S T A D O   D E   P R O D U C T O S
         ====================================================================================== */
+
+
         // EVENTO PARA MODIFICAR EL PRECIO DE VENTA DEL PRODUCTO
         $('#tbl_ListadoProductos tbody').on('click', '.dropdown-item', function() {
 
@@ -549,9 +556,11 @@
                     if ($id_tipo_afectacion == 12) {
                         $factor_iva = $afectacion.factor;
                         $porcentaje_iva = $afectacion.porcentaje;
+                        //CALCULAR SUBTOTAL
                         $subtotal = ($precio_con_iva / $factor_iva) * cantidad_actual
                         $iva = ($precio_con_iva * cantidad_actual) - (($precio_con_iva * cantidad_actual) / $factor_iva); // * EL % DE IVA 
                     } else {
+                        //CALCULAR SUBTOTAL
                         $subtotal = ($precio_con_iva) * cantidad_actual
                         $iva = 0
                         $factor_iva = 1;
@@ -627,16 +636,15 @@
                     value="` + $precio_con_iva + `">`).draw();
 
                     //CALCULAR IVA
-                    if ($id_tipo_afectacion == 10) {
+                    if ($id_tipo_afectacion == 12) {
                         $factor_iva = $afectacion.factor;
                         $porcentaje_iva = $afectacion.porcentaje;
                         //CALCULAR SUBTOTAL
-                        $subtotal = ($precio_con_iva / $factor_iva) * $cantidad_actual
-
-                        $iva = ($precio_con_iva * $cantidad_actual) - (($precio_con_iva * $cantidad_actual) / $factor_iva); // * EL % DE IVA
+                        $subtotal = ($precio_con_iva / $factor_iva) * cantidad_actual
+                        $iva = ($precio_con_iva * cantidad_actual) - (($precio_con_iva * cantidad_actual) / $factor_iva); // * EL % DE IVA 
                     } else {
                         //CALCULAR SUBTOTAL
-                        $subtotal = ($precio_con_iva) * $cantidad_actual
+                        $subtotal = ($precio_con_iva) * cantidad_actual
                         $iva = 0
                         $factor_iva = 1;
                     }
@@ -662,6 +670,7 @@
             $('#tbl_ListadoProductos').DataTable().row($(this).parents('tr')).remove().draw();
             recalcularTotales();
         });
+
         /* ======================================================================================
         F I N   E V E N T O S   D A T A T A B L E   L I S T A D O   D E   P R O D U C T O S
         ====================================================================================== */
@@ -674,6 +683,17 @@
         $("#btnCancelarVenta").on('click', function() {
             fnc_InicializarFormulario();
         })
+
+        $('#tbl_ListadoProductos tbody').on('keypress', '.iptCantidad', function(e) {
+            var key = e.keyCode;
+            //102 -> F
+            //98 -> B
+
+            if (key == 45) {
+                e.preventDefault();
+            }
+
+        });
 
         $("#listado-boletas-tab").on('click', function() {
             fnc_CargarDataTableListadoBoletas();
@@ -696,7 +716,7 @@
 
         fnc_OcultarLoader();
 
-    })
+    }) // FIN DOCUMENT READY
 
 
     function fnc_InicializarFormulario() {
@@ -877,37 +897,6 @@
     /*===================================================================*/
     function fnc_CargarAutocompleteClientes() {
 
-        $("#nombre_cliente_razon_social").autocomplete({
-            source: "ajax/autocomplete_clientes.ajax.php?id_tipo_documento=" + $("#tipo_documento").val(),
-            minLength: 2,
-            autoFocus: true,
-            select: function(event, ui) {
-                CargarCliente(ui.item.value);
-                return false;
-            },
-            response: function(event, ui) {
-
-                if (!ui.content.length) {
-                    var noResult = {
-                        value: "",
-                        label: '<a href="javascript:void(0);" class="d-flex border border-secondary border-left-0 border-right-0 border-top-0" style="width:100% !important;">' +
-                            '<div class=""> ' +
-                            '<span class="text-sm fw-bold">No existen datos</span>' +
-                            '</div>' +
-                            '</a>'
-                    };
-                    ui.content.push(noResult);
-                }
-            },
-            open: function() {
-                $("ul.ui-menu").width($(this).innerWidth());
-            }
-        }).data("ui-autocomplete")._renderItem = function(ul, item) {
-            return $("<li class='ui-autocomplete-row'></li>")
-                .data("item.autocomplete", item)
-                .append(item.label)
-                .appendTo(ul);
-        };
 
         $("#nro_documento").autocomplete({
             source: "ajax/autocomplete_clientes.ajax.php?id_tipo_documento=" + $("#tipo_documento").val(),
@@ -1223,6 +1212,7 @@
                     /*===================================================================*/
                 } else {
                     mensajeToast('error', 'EL PRODUCTO NO EXISTE O NO TIENE STOCK');
+
                 }
 
             }
@@ -1261,10 +1251,8 @@
 
                 //OBTENER PRECIO DEL PRODUCTO
                 $precio = precio_venta; //parseFloat($.parseHTML(data['precio'])[0]['value']);
-                console.log("🚀 ~ $ ~ $precio:", $precio)
 
                 $id_tipo_afectacion = $('#tbl_ListadoProductos').DataTable().cell(index, 3).data();
-                console.log("🚀 ~ $ ~ $id_tipo_afectacion:", $id_tipo_afectacion)
 
                 var formaData = new FormData();
                 formaData.append('accion', 'obtener_porcentaje_impuesto');
@@ -1281,7 +1269,7 @@
                 cantidad_actual = parseFloat($.parseHTML(data['cantidad'])[0]['value']);
 
                 //CALCULAR IVA
-                if ($id_tipo_afectacion == 10) {
+                if ($id_tipo_afectacion == 12) {
                     $factor_iva = $afectacion.factor;
                     $porcentaje_iva = $afectacion.porcentaje;
                     $iva = ($precio * cantidad_actual * $porcentaje_iva); // * EL % DE IVA
@@ -1420,7 +1408,6 @@
         diff = new Date(end - start);
 
         days = diff / 1000 / 60 / 60 / 24;
-        console.log("🚀 ~ fnc_GuardarVenta ~ days:", days)
 
         if (parseInt(days) > parseInt(2)) {
             Swal.fire({
@@ -1506,7 +1493,7 @@
                     })
                 }
 
-                window.open($ruta+'vistas/modulos/impresiones/generar_ticket.php?id_venta=' +
+                window.open($ruta + 'vistas/modulos/impresiones/generar_ticket.php?id_venta=' +
                     response["id_venta"],
                     "ModalPopUp",
                     "toolbar=no," +
@@ -1638,13 +1625,13 @@
         $("#nombre_cliente_razon_social").prop('disabled', disabled)
         $("#direccion").prop('disabled', disabled)
         $("#telefono").prop('disabled', disabled)
-        if (disabled == true) $(".btnConsultarDni").prop('readonly', 'true')
-        else $(".btnConsultarDni").prop('readonly', 'false');
+        if (disabled == true) $(".btnConsultarDpi").prop('readonly', 'true')
+        else $(".btnConsultarDpi").prop('readonly', 'false');
 
     }
 
     function fnc_ImprimirBoleta($id_venta) {
-        window.open($ruta+'vistas/modulos/impresiones/generar_ticket.php?id_venta=' + $id_venta,
+        window.open($ruta + 'vistas/modulos/impresiones/generar_ticket.php?id_venta=' + $id_venta,
             "ModalPopUp",
             "toolbar=no," +
             "scrollbars=no," +

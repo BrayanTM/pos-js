@@ -1,7 +1,15 @@
+# Deshabilitar la indexación de directorios
 Options All -Indexes
+
+# Deshabilitar MultiViews
 Options -MultiViews
 
+# Habilitar el motor de reescritura de URLs
 RewriteEngine On
 
+# Redirigir todas las solicitudes a index.php si el archivo solicitado no existe
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]
+
+# Establecer la zona horaria a "America/Guatemala"
+php_value date.timezone "America/Guatemala"

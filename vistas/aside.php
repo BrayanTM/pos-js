@@ -30,11 +30,6 @@ $datosEmpresa = UsuarioModelo::mdlObtenerEmpresaPrincipal();
     <a href="./" class="brand-link">
         <img src="vistas/assets/dist/img/logos_empresas/<?php echo $datosEmpresa["logo"] ?? 'no_image.jpg' ?>" style="width: 35px;height: 35px;" id="logo_sistema" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light"><?php echo $datosEmpresa["nombre_comercial"] ?? 'SIN REGISTRAR' ?></span>
-        <!-- <br>
-        <p class="fs-6 text-center mt-2">
-            Contacto: Luis Lozano Arica <br>
-            Celular: +51932676811
-        </p> -->
     </a>
 
 

@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('America/Guatemala');
 
 require_once "conexion.php";
 
@@ -11,7 +12,7 @@ class ArqueoCajaModelo
 
         $id_usuario = $_SESSION["usuario"]->id_usuario;
 
-        $stmt = Conexion::conectar()->prepare("select '' as opciones,
+        $stmt = Conexion::conectar()->prepare("SELECT '' as opciones,
                                                 ac.id,
                                                 usu.usuario,
                                                 ac.fecha_apertura,
@@ -69,7 +70,7 @@ class ArqueoCajaModelo
 
         $id_usuario = $_SESSION["usuario"]->id_usuario;
 
-        $stmt = Conexion::conectar()->prepare("select ifnull(ac.id,0) as id,
+        $stmt = Conexion::conectar()->prepare("SELECT ifnull(ac.id,0) as id,
                                                     usu.usuario,
                                                     ac.fecha_apertura,
                                                     ac.fecha_cierre,
@@ -159,7 +160,7 @@ class ArqueoCajaModelo
             $dbh = Conexion::conectar();
 
             $stmt = $dbh->prepare("update arqueo_caja
-                                     set fecha_cierre = current_timestamp(),
+                                     set fecha_cierre = NOW(),
                                             ingresos = ?,
                                             devoluciones = ?,
                                             gastos = ?,
@@ -224,7 +225,7 @@ class ArqueoCajaModelo
 
 
             $stmt = $dbh->prepare("insert into arqueo_caja(id_usuario, fecha_apertura, monto_apertura, monto_final)
-                                        values(?,current_timestamp(), ?, ?)");
+                                        values(?,NOW(), ?, ?)");
 
             $dbh->beginTransaction();
             $stmt->execute(array(
@@ -267,7 +268,7 @@ class ArqueoCajaModelo
 
             // else {
             //     $stmt = $dbh->prepare("update arqueo_caja
-            //                          set fecha_apertura = current_timestamp(),
+            //                          set fecha_apertura = NOW(),
             //                          monto_apertura = monto_apertura + ?,
             //                             estado = 1
             //                         where id = ?");

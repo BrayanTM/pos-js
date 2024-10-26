@@ -9,7 +9,7 @@ class SeriesModelo
     static public function mdlObtenerSeries($post)
     {
 
-        $column = ["id", "id_tipo_comprobante", "serie", "correlativo", "estado"];
+        $column = ["id", "id_tipo_comprobante", "serie", "correlativo", "estado", "acciones"];
 
         $query = " SELECT  s.id, 
                             t.descripcion,

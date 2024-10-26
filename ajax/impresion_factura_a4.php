@@ -11742,7 +11742,7 @@ $ruta = Rutas::RutaProyecto();
 <body>
 
     <?php
-    $nombreImagen = $ruta."vistas/assets/dist/img/logos_empresas/" . $venta["logo"];
+    $nombreImagen = $ruta . "vistas/assets/dist/img/logos_empresas/" . $venta["logo"];
     $imagenBase64 = "data:image/png;base64," . base64_encode(file_get_contents($nombreImagen));
     ?>
 
@@ -11755,19 +11755,27 @@ $ruta = Rutas::RutaProyecto();
                     <img src="<?php echo $imagenBase64 ?>" width="140" alt="">
                 </td>
                 <td style="text-align: center;width: 55%;">
-                    <span style="font-size: 23px;font-style: italic;"><?php echo $venta["empresa"] ?></span> <br>
-                    <span style="font-size: 14px;"><?php echo $venta["direccion_empresa"] ?></span> <br>
-                    <span style="font-size: 14px;"><?php echo $venta["ubigeo"] ?></span> <br>
-                    <span style="font-size: 14px;"><?php echo ("email: " . $venta["email"] . "  - Teléfono: " . $venta["telefono_empresa"]) ?></span> <br>
+                    <!-- <span style="font-size: 23px;font-style: italic;"><?php echo $venta["empresa"] ?></span> <br> -->
+                    <span style="font-size: 20px;font-style: italic; font-weight: bold;">DISTRIBUIDORA</span> <br>
+                    <span style="font-size: 30px;font-style: italic; font-weight: bold;">LA GUADALUPANA</span> <br>
+                    <span style="font-size: 12px;"><?php echo $venta["direccion_empresa"] ?></span> <br>
+                    <!-- <span style="font-size: 14px;"><?php echo $venta["ubigeo"] ?></span> <br> -->
+                    <span style="font-size: 12px;">SANTA CRUZ DEL QUICHE, QUICHE</span> <br>
+                    <span style="font-size: 12px;"><?php echo ("Teléfono: " . $venta["telefono_empresa"]) ?> / Claro 1: 5611-1048 / Claro 2: 4188-0203</span> <br>
                 </td>
                 <td style="text-align: center;width: 25%;">
                     <table style="width: 100%;">
                         <tr>
-                            <td style="font-size: 14px;border-color: #000;text-align: center;border-width: 5px;border-color: black;border-style: double;padding: 5px 15px;">
-                                <span>NIT: <?php echo $venta["nit"] ?> </span> <br>
+                            <td style="font-size: 12px;border-color: #000;text-align: center;border-width: 5px;border-color: black;border-style: double;padding: 5px 15px;">
+                                <!-- <span>NIT: <?php echo $venta["nit"] ?> </span> <br>
                                 <span>FACTURA</span> <br>
                                 <span>ELECTRÓNICA</span> <br>
-                                <span><?php echo $venta["serie"] . ' - ' . $venta["correlativo"] ?></span>
+                                <span><?php echo $venta["serie"] . ' - ' . $venta["correlativo"] ?></span> -->
+                                <span>JUAN LAUREANO, ZAPETA VELASQUEZ </span> <br>
+                                <span>NIT: <?php echo $venta["nit"] ?> </span> <br>
+                                <br>
+                                <span>FACTURA: <?php echo $venta["serie"] . ' - ' . $venta["correlativo"] ?></span> <br>
+                                <span>FECHA DE EMISION: <?php echo $venta["fecha_emision"] ?></span><br>
                             </td>
                         </tr>
                     </table>
@@ -11781,7 +11789,7 @@ $ruta = Rutas::RutaProyecto();
     <table style="width: 100%;margin-top: 20px;" class="rounded">
 
         <thead>
-            <tr style="font-size: 14px;text-align: left;background-color: #34495e; color: white;font-weight: bold;">
+            <tr style="font-size: 14px;text-align: left;background-color: #34495e; color: white;font-weight: bold; border-width: 1px; border-color: black;">
                 <th>
                     <span style="margin-left: 10px;">DATOS DEL CLIENTE</span>
                 </th>
@@ -11800,24 +11808,20 @@ $ruta = Rutas::RutaProyecto();
                                     <span style="margin-left: 10px;font-size: 13px;font-weight: bold;">CLIENTE:</span> <br>
                                     <span style="margin-left: 10px;font-size: 13px;font-weight: bold;">NIT:</span> <br>
                                     <span style="margin-left: 10px;font-size: 13px;font-weight: bold;">DIRECCIÓN:</span> <br>
-                                    <span style="margin-left: 10px;font-size: 13px;font-weight: bold;">FECHA DE EMISIÓN:</span><br>
+                                    <span style="margin-left: 10px;font-size: 13px;font-weight: bold;">TELÉFONO:</span><br>
                                     <span style="margin-left: 10px;font-size: 13px;font-weight: bold;">FORMA DE PAGO:</span>
                                 </td>
                                 <td style="width: 70%;">
                                     <span style="font-size: 13px;"><?php echo $venta["nombres_apellidos_razon_social"] ?> </span><br>
                                     <span style="font-size: 13px;"><?php echo $venta["nro_documento"] ?></span><br>
                                     <span style="font-size: 13px;"><?php echo $venta["direccion"] ?></span><br>
-                                    <span style="font-size: 13px;"><?php echo $venta["fecha_emision"] ?></span><br>
+                                    <span style="font-size: 13px;"><?php echo $venta["telefono"] ?></span><br>
                                     <span style="font-size: 13px;"><?php echo $venta["forma_pago"] ?></span>
                                 </td>
                             </tr>
 
                         </body>
                     </table>
-                    <!-- <span>COMERCIAL FERRETERA PRISMA S.A.C.</span><br>
-                     <span>20525994741</span><br>
-                     <span>AVENIDA ANGAMOS 154 - SURQUILLO</span><br>
-                     <span>2023-12-31</span> -->
                 </td>
             </tr>
         </body>
@@ -11830,21 +11834,19 @@ $ruta = Rutas::RutaProyecto();
     <table class="table">
         <thead>
             <tr>
-                <th style="width:20%;font-size: 14px;border: 1px solid #34495e;text-align: center;background-color: #34495e; color: white;font-weight: bold;">CÓDIGO</th>
-                <th style="width:45%;font-size: 14px;border: 1px solid #34495e;text-align: center;background-color: #34495e; color: white;font-weight: bold;">DESCRIPCIÓN</th>
-                <th style="width:10%;font-size: 14px;border: 1px solid #34495e;text-align: center;background-color: #34495e; color: white;font-weight: bold;">CANT.</th>
+                <th style="width:10%;font-size: 14px;border: 1px solid #34495e;text-align: center;background-color: #34495e; color: white;font-weight: bold;">CANTIDAD</th>
+                <th style="width:65%;font-size: 14px;border: 1px solid #34495e;text-align: center;background-color: #34495e; color: white;font-weight: bold;">DESCRIPCIÓN</th>
                 <td style="width:12%;font-size: 14px;border: 1px solid #34495e;text-align: center;background-color: #34495e; color: white;font-weight: bold;">P. UNIT.</td>
-                <td style="width:13%;font-size: 14px;border: 1px solid #34495e;text-align: center;background-color: #34495e; color: white;font-weight: bold;">IMPORTE</td>
+                <td style="width:13%;font-size: 14px;border: 1px solid #34495e;text-align: center;background-color: #34495e; color: white;font-weight: bold;">TOTAL</td>
             </tr>
         </thead>
         <tbody>
             <?php for ($i = 0; $i < count($detalle_venta); $i++) : ?>
                 <tr>
-                    <td style="width:20%;font-size: 12px;border: 1px solid #34495e;text-align: center;"><?php echo $detalle_venta[$i]["codigo_producto"]; ?></td>
-                    <td style="width:45%;font-size: 12px;border: 1px solid #34495e;text-align: center;"><?php echo $detalle_venta[$i]["descripcion"]; ?></td>
-                    <td style="width:10%;font-size: 12px;border: 1px solid #34495e;text-align: center;"><?php echo $detalle_venta[$i]["cantidad"]; ?></td>
-                    <td style="width:12%;font-size: 12px;border: 1px solid #34495e;text-align: center;"><?php echo $detalle_venta[$i]["precio_unitario"]; ?></td>
-                    <td style="width:13%;font-size: 12px;border: 1px solid #34495e;text-align: center;"><?php echo $detalle_venta[$i]["importe_total"]; ?></td>
+                    <td style="width:20%;font-size: 13px;border: 1px solid #34495e;text-align: center;"><?php echo intval($detalle_venta[$i]["cantidad"]); ?></td>
+                    <td style="width:45%;font-size: 13px;border: 1px solid #34495e;text-align: center;"><?php echo $detalle_venta[$i]["descripcion"]; ?></td>
+                    <td style="width:12%;font-size: 13px;border: 1px solid #34495e;text-align: center;">Q. <?php echo $detalle_venta[$i]["precio_unitario"]; ?></td>
+                    <td style="width:13%;font-size: 13px;border: 1px solid #34495e;text-align: center;">Q. <?php echo $detalle_venta[$i]["importe_total"]; ?></td>
                 </tr>
 
             <?php endfor; ?>
@@ -11859,6 +11861,62 @@ $ruta = Rutas::RutaProyecto();
     ?>
 
     <!-- IMPORTES DE LA VENTA -->
+    <table class="table" style="width: 100%;">
+        <thead>
+            <tr>
+                <th colspan="3" style="width:100%;font-size: 14px;border: 1px solid #34495e;text-align: center;background-color: #34495e; color: white;font-weight: bold;">TOTAL VENTA</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <?php
+            function numeroALetras($numero)
+            {
+                $formatter = new NumberFormatter("es", NumberFormatter::SPELLOUT);
+                return $formatter->format($numero);
+            }
+
+            $totalEnLetras = numeroALetras($venta["importe_total"]);
+            ?>
+
+            <tr>
+                <td style="width: 70%;text-align: left; border: 1px solid #34495e;font-size: 12px; font-weight: bold;">
+                    <!-- <span style="margin-left: 15px;">TOTAL EN LETRAS: <?php echo ucfirst($totalEnLetras); ?> quetzales</span> -->
+                </td>
+                <td style="width: 15%;text-align: left; border: 1px solid #34495e;font-size: 11px;">
+                    <span style="margin-left: 15px;">SUBTOTAL:</span>
+                </td>
+                <td style="width: 15%;text-align: left; border: 1px solid #34495e;font-size: 11px;">
+                    <span style="margin-left: 15px;">Q.<?php echo $venta["importe_total"] - $venta["total_iva"] ?></span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 70%;text-align: left; border: 1px solid #34495e;font-size: 12px; font-weight: bold;">
+                    <!-- <span style="margin-left: 15px;">TOTAL EN LETRAS: <?php echo ucfirst($totalEnLetras); ?> quetzales</span> -->
+                </td>
+                <td style="width: 15%;text-align: left; border: 1px solid #34495e;font-size: 11px;">
+                    <span style="margin-left: 15px;">TOTAL IVA:</span>
+                </td>
+                <td style="width: 15%;text-align: left; border: 1px solid #34495e;font-size: 11px;">
+                    <span style="margin-left: 15px;">Q.<?php echo $venta["total_iva"] ?></span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 70%;text-align: left; border: 1px solid #34495e;font-size: 12px; font-weight: bold;">
+                    <span style="margin-left: 15px;">TOTAL EN LETRAS: <?php echo ucfirst($totalEnLetras); ?> quetzales</span>
+                </td>
+                <td style="width: 15%;text-align: left; border: 1px solid #34495e;font-size: 12px; font-weight: bold;">
+                    <span style="margin-left: 15px;">TOTAL:</span>
+                </td>
+                <td style="width: 15%;text-align: left; border: 1px solid #34495e;font-size: 12px; font-weight: bold;">
+                    <span style="margin-left: 15px;">Q.<?php echo $venta["importe_total"] ?></span>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <!-- QR -->
     <table style="width: 100%;">
 
         <body>
@@ -11866,64 +11924,11 @@ $ruta = Rutas::RutaProyecto();
             <tr>
                 <td style="width: 30%;"><img src="<?php echo $imagenQRBase64 ?>" width="140" alt=""></td>
                 <td style="width: 70%;">
-                    <table style="width: 100%;">
-
-                        <body>
-                            <tr>
-                                <td style="width: 80%;text-align: right; border: 1px solid #34495e;font-size: 12px;">
-                                    <span style="margin-right: 15px;">Operaciones Gravadas</span>
-                                </td>
-                                <td style="width: 20%;;text-align: right; border: 1px solid #34495e;font-size: 12px;">
-                                    <span style="margin-right: 15px;"><?php echo $venta["ope_gravada"] ?></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 80%;text-align: right; border: 1px solid #34495e;font-size: 12px;">
-                                    <span style="margin-right: 15px;">Operaciones Inafectas</span>
-                                </td>
-                                <td style="width: 20%;;text-align: right; border: 1px solid #34495e;font-size: 12px;">
-                                    <span style="margin-right: 15px;"><?php echo $venta["ope_inafecta"] ?></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 80%;text-align: right; border: 1px solid #34495e;font-size: 12px;">
-                                    <span style="margin-right: 15px;">Operaciones Exoneradas</span>
-                                </td>
-                                <td style="width: 20%;;text-align: right; border: 1px solid #34495e;font-size: 12px;">
-                                    <span style="margin-right: 15px;"><?php echo $venta["ope_exonerada"] ?></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 80%;text-align: right; border: 1px solid #34495e;font-size: 12px;">
-                                    <span style="margin-right: 15px;">Subtotal</span>
-                                </td>
-                                <td style="width: 20%;;text-align: right; border: 1px solid #34495e;font-size: 12px;">
-                                    <span style="margin-right: 15px;"><?php echo $venta["subtotal"] ?></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 80%;text-align: right; border: 1px solid #34495e;font-size: 12px;">
-                                    <span style="margin-right: 15px;">Total IGV</span>
-                                </td>
-                                <td style="width: 20%;;text-align: right; border: 1px solid #34495e;font-size: 12px;">
-                                    <span style="margin-right: 15px;"><?php echo $venta["total_igv"] ?></span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 80%;text-align: right; border: 1px solid #34495e;font-size: 12px;">
-                                    <span style="margin-right: 15px;">Total Venta</span>
-                                </td>
-                                <td style="width: 20%;;text-align: right; border: 1px solid #34495e;font-size: 12px;">
-                                    <span style="margin-right: 15px;"><?php echo $venta["importe_total"] ?></span>
-                                </td>
-                            </tr>
-                        </body>
-                    </table>
                 </td>
             </tr>
 
         </body>
-    </table>    
+    </table>
 
     <!-- CUOTAS EN CASO SEA FACTURA AL CREDITO -->
 

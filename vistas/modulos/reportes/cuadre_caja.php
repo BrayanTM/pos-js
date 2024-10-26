@@ -46,6 +46,11 @@ M A I N   C O N T E N T
 
                         <div class="row">
 
+                            <div class="col-12 col-lg-6 mb-2">
+                                <label class="mb-0 ml-1 text-sm my-text-color"><i class="fas fa-gifts mr-1 my-text-color"></i>Usuario</label>
+                                <input type="text" style="border-radius: 20px;" class="form-control form-control-sm" id="usuario" aria-label="Small" aria-describedby="inputGroup-sizing-sm" disabled>
+                            </div>
+
                             <!-- FECHA DE COMPRA -->
                             <div class="col-12 col-md-4 col-lg-3 mb-2">
                                 <label class="mb-0 ml-1 text-sm my-text-color"><i class="fas fa-id-card mr-1 my-text-color"></i> Fecha Desde</label>
@@ -61,11 +66,6 @@ M A I N   C O N T E N T
                                     <span class="input-group-text" id="inputGroup-sizing-sm" style="cursor: pointer;" data-toggle="datetimepicker" data-target="#fecha_hasta"><i class="fas fa-calendar-alt ml-1 text-white"></i></span>
                                     <input type="text" class="form-control form-control-sm datetimepicker-input" style="border-top-right-radius: 20px;border-bottom-right-radius: 20px;" aria-label="Sizing example input" id="fecha_hasta" name="fecha_hasta" aria-describedby="inputGroup-sizing-sm">
                                 </div>
-                            </div>
-
-                            <div class="col-12 col-lg-6 mb-2">
-                                <label class="mb-0 ml-1 text-sm my-text-color"><i class="fas fa-gifts mr-1 my-text-color"></i>Usuario</label>
-                                <input type="text" style="border-radius: 20px;" class="form-control form-control-sm" id="usuario" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
                             </div>
 
 
@@ -102,28 +102,28 @@ M A I N   C O N T E N T
         <div class="row pt-3 pb-3">
 
             <div class="col-12">
-
-                <table id="tbl_arqueo_caja" class="table table-striped w-100 shadow border border-secondary">
-                    <thead class="bg-main">
-                        <tr style="font-size: 15px;">
-                            <th class="text-cetner"></th> <!-- 10 -->
-                            <th>ID</th> <!-- 2 -->
-                            <th>Id Usu</th> <!-- 3 -->
-                            <th>Usuario</th> <!-- 3 -->
-                            <th>Fec. Apertura</th> <!-- 4 -->
-                            <th>Fec. Cierre</th> <!-- 5 -->
-                            <th>Monto Apertura</th> <!-- 6 -->
-                            <th>Ingresos</th> <!-- 7 -->
-                            <th>Devoluciones</th> <!-- 8 -->
-                            <th>Gastos</th> <!-- 9 -->
-                            <th>Monto Final</th> <!-- 10 -->
-                            <th>Estado</th> <!-- 11 -->
-                        </tr>
-                    </thead>
-                    <tbody class="text-small">
-                    </tbody>
-                </table>
-
+                <div class="table-responsive">
+                    <table id="tbl_arqueo_caja" class="table table-striped w-100 shadow border border-secondary">
+                        <thead class="bg-main">
+                            <tr style="font-size: 15px;">
+                                <th class="text-cetner"></th> <!-- 0 -->
+                                <th>ID</th> <!-- 1 -->
+                                <th>Id Usu</th> <!-- 2 -->
+                                <th>Usuario</th> <!-- 3 -->
+                                <th>Fec. Apertura</th> <!-- 4 -->
+                                <th>Fec. Cierre</th> <!-- 5 -->
+                                <th>Monto Apertura</th> <!-- 6 -->
+                                <th>Ingresos</th> <!-- 7 -->
+                                <th>Devoluciones</th> <!-- 8 -->
+                                <th>Gastos</th> <!-- 9 -->
+                                <th>Monto Final</th> <!-- 10 -->
+                                <th>Estado</th> <!-- 11 -->
+                            </tr>
+                        </thead>
+                        <tbody class="text-small">
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
@@ -154,16 +154,16 @@ M A I N   C O N T E N T
         $(".btnBuscarArqueos").on('click', function() {
             fnc_CargarDataTableArqueosCaja($("#usuario").val().split("-")[0].trim(), $("#fecha_desde").val(), $("#fecha_hasta").val());
         })
-        $(".btnLimpiarFiltro").on('click', function() {
-            $("#usuario").val(""); 
-            $("#fecha_desde").val(""); 
+        $("#btnLimpiarFiltros").on('click', function() {
+            $("#usuario").val("");
+            $("#fecha_desde").val("");
             $("#fecha_hasta").val("")
             fnc_CargarDataTableArqueosCaja("", "", "");
         })
 
         $('#tbl_arqueo_caja tbody').on('click', '.btnImprimirDetalleArqueo', function() {
             var data = $('#tbl_arqueo_caja').DataTable().row($(this).parents('tr')).data();
-            
+
             fnc_ImprimirArqueo(data["1"], data["2"]);
         });
 
@@ -191,8 +191,15 @@ M A I N   C O N T E N T
 
         $("#tbl_arqueo_caja").DataTable({
             dom: 'Bfrtip',
-            buttons: ['pageLength'],
-            pageLength: [5, 10, 15, 30, 50, 100],
+            buttons: ['pageLength', {
+                extend: 'excelHtml5',
+                text: 'Excel',
+                title: 'Arqueos de Caja',
+                exportOptions: {
+                    columns: [3, 4, 5, 6, 7, 8, 9, 10]
+                }
+            }],
+            pageLength: [10, 25, 50, 100],
             pageLength: 10,
             ajax: {
                 url: "ajax/arqueo_caja.ajax.php",
@@ -241,7 +248,7 @@ M A I N   C O N T E N T
                     }
                 },
                 {
-                    targets: [1,2],
+                    targets: [1, 2],
                     visible: false
                 },
                 {
@@ -266,7 +273,7 @@ M A I N   C O N T E N T
     }
 
     /*===================================================================*/
-    //A U T O C O M P L E T E   D E   C L I E N T E S
+    //A U T O C O M P L E T E   D E   U S U A R I O S
     /*===================================================================*/
     function fnc_CargarAutocompleteUsuarios() {
 
@@ -274,11 +281,10 @@ M A I N   C O N T E N T
             source: "ajax/usuarios.ajax.php",
             minLength: 2,
             autoFocus: true,
-            select: function(event, ui) {                
+            select: function(event, ui) {
                 $("#usuario").val(ui.item.value)
                 return false;
             },
-
             response: function(event, ui) {
 
                 if (!ui.content.length) {
@@ -292,6 +298,7 @@ M A I N   C O N T E N T
                     };
                     ui.content.push(noResult);
                 }
+
             },
             open: function() {
                 $("ul.ui-menu").width($(this).innerWidth());
@@ -325,7 +332,7 @@ M A I N   C O N T E N T
     function fnc_ImprimirArqueo($id_arqueo_caja, $id_usuario_arqueo) {
 
 
-        window.open($ruta+'vistas/modulos/impresiones/imprimir_arqueo.php?id_arqueo_caja=' + $id_arqueo_caja+'&id_usuario_arqueo='+$id_usuario_arqueo,
+        window.open($ruta + 'vistas/modulos/impresiones/imprimir_arqueo.php?id_arqueo_caja=' + $id_arqueo_caja + '&id_usuario_arqueo=' + $id_usuario_arqueo,
             "ModalPopUp",
             "toolbar=no," +
             "scrollbars=no," +

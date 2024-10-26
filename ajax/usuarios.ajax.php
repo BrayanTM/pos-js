@@ -65,3 +65,13 @@ if (isset($_POST["accion"])) {
             break;
     }
 }
+
+//=========================================================================================
+// PETICIONES GET
+//=========================================================================================
+if (isset($_GET['term'])){
+
+    $term = $_GET['term'];
+    $usuarios = UsuarioModelo::mdlObtenerUsuariosAutocomplete($term);
+    echo json_encode($usuarios, JSON_UNESCAPED_UNICODE);
+}
