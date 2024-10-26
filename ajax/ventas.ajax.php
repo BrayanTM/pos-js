@@ -320,21 +320,13 @@ if (isset($_POST["accion"])) {
 
         case 'obtener_listado_boletas_x_dia':
 
-<<<<<<< HEAD
             $response = VentasModelo::mdlObtenerListadoComprobantesPorDia($_POST);
-=======
-            $response = VentasModelo::mdlObtenerListadoBoletasPorDia($_POST);
->>>>>>> 219f02022596ad2ac7cf4a2e384526749e2f3a2f
             echo json_encode($response, JSON_UNESCAPED_UNICODE);
             break;
 
         case 'obtener_listado_boletas_x_mes':
 
-<<<<<<< HEAD
             $response = VentasModelo::mdlObtenerListadoComprobantesPorMes($_POST);
-=======
-            $response = VentasModelo::mdlObtenerListadoBoletasPorMes($_POST);
->>>>>>> 219f02022596ad2ac7cf4a2e384526749e2f3a2f
             echo json_encode($response, JSON_UNESCAPED_UNICODE);
             break;
 
