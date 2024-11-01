@@ -166,21 +166,21 @@
                                 <div class="col-md-12">
                                     <table id="tbl_ListadoProductos" class="table  w-100 shadow border border-secondary">
                                         <thead class="bg-main text-left">
-                                            <th></th>
-                                            <th>Cod Producto</th>
-                                            <th>Producto</th>
-                                            <th>Cantidad</th>
-                                            <th>Cantidad Temp</th>
-                                            <th>Costo Unit.</th>
-                                            <th>Costo Unit. Temp</th>
-                                            <th>Descuento</th>
-                                            <th>Descuento Temp</th>
-                                            <th>SubTotal</th>
-                                            <th>Impuesto</th>
-                                            <th>Total</th>
-                                            <th>Tipo Afectacion</th>
-                                            <th>Factor Iva</th>
-                                            <th>% Iva</th>
+                                            <th></th> <!-- 0 -->
+                                            <th>Cod Producto</th> <!-- 1 -->
+                                            <th>Producto</th> <!-- 2 -->
+                                            <th>Cantidad</th> <!-- 3 -->
+                                            <th>Cantidad Temp</th> <!-- 4 -->
+                                            <th>Costo Unit.</th> <!-- 5 -->
+                                            <th>Costo Unit. Temp</th> <!-- 6 -->
+                                            <th>Descuento</th> <!-- 7 -->
+                                            <th>Descuento Temp</th> <!-- 8 -->
+                                            <th>SubTotal</th> <!-- 9 -->
+                                            <th>Impuesto</th> <!-- 10 -->
+                                            <th>Total</th> <!-- 11 -->
+                                            <th>Tipo Afectacion</th> <!-- 12 -->
+                                            <th>Factor Iva</th> <!-- 13 -->
+                                            <th>% Iva</th> <!-- 14 -->
                                         </thead>
                                     </table>
                                 </div>

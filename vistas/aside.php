@@ -94,6 +94,15 @@ $datosEmpresa = UsuarioModelo::mdlObtenerEmpresaPrincipal();
                 <?php endforeach; ?>
 
                 <li class="nav-item">
+                    <a style="cursor: pointer;" class="nav-link" href='archivos/Manual de Usuario - Sistema de Punto de Venta.pdf' download>
+                        <i class="nav-icon fas fa-info-circle"></i>
+                        <p>
+                            Ayuda
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a style="cursor: pointer;" class="nav-link" href="<?php echo $ruta ?>/?cerrar_sesion=1">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>
