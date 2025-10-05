@@ -1,4 +1,4 @@
-Sistema de punto de venta para la distribuidora la guadalupana.
+Sistema de punto de venta.
 
 - Credenciales de inicio de Sesión:
     - Usuario: admin
